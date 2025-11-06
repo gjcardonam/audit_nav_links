@@ -12,7 +12,7 @@ pipeline {
     // Un solo archivo de configuración para QA y DEV
     string(
       name: 'CONFIG',
-      defaultValue: 'configs/config.json',
+      defaultValue: 'config.json',
       description: 'Ruta al JSON de configuración del auditor de links'
     )
   }
