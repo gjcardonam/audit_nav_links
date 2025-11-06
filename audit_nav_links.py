@@ -53,6 +53,12 @@ DEFAULT_LINK_TARGETS = {
 }
 
 def _bool_env_default(val, default_true=True):
+    """
+    Interpreta valores tipo bool / str:
+    - "0", "false", "no" => False
+    - Lo demás => True
+    Si val es None => default_true.
+    """
     if isinstance(val, bool): return val
     if val is None: return default_true
     return str(val).lower() not in {"0", "false", "no"}
@@ -156,7 +162,24 @@ def build_config(args) -> Dict[str, Any]:
     db = _resolve_db(cfg.get("db", {}))
     progress = {"bar_width": int(cfg.get("progress", {}).get("bar_width", 46))}
 
-    return {"environments": envs_resolved, "rules": rules, "db": db, "progress": progress}
+    # --- Config de salida (JSON/CSV) con override por variables de entorno
+    out_cfg = cfg.get("output", {})
+    env_write_json = os.getenv("WRITE_JSON")
+    env_write_csv  = os.getenv("WRITE_CSV")
+
+    if env_write_json is not None:
+        write_json = _bool_env_default(env_write_json, True)
+    else:
+        write_json = _bool_env_default(out_cfg.get("write_json", True), True)
+
+    if env_write_csv is not None:
+        write_csv = _bool_env_default(env_write_csv, True)
+    else:
+        write_csv = _bool_env_default(out_cfg.get("write_csv", True), True)
+
+    output = {"write_json": write_json, "write_csv": write_csv}
+
+    return {"environments": envs_resolved, "rules": rules, "db": db, "progress": progress, "output": output}
 
 # ---------- grafana http ----------
 def make_session(url: str, user: str, passwd: str, verify_ssl: bool):
@@ -367,7 +390,13 @@ def db_bulk_insert_violations(conn, schema: str, run_id, viols: List[Dict[str, A
     conn.commit()
 
 # ---------- core auditor ----------
-def run_for_environment(env_cfg: Dict[str, Any], rules: Dict[str, Any], db_cfg: Dict[str, Any], bar_width: int) -> Dict[str, Any]:
+def run_for_environment(
+    env_cfg: Dict[str, Any],
+    rules: Dict[str, Any],
+    db_cfg: Dict[str, Any],
+    bar_width: int,
+    output_cfg: Dict[str, Any],
+) -> Dict[str, Any]:
     g = env_cfg["grafana"]
     env_name = env_cfg["name"]
 
@@ -541,21 +570,24 @@ def run_for_environment(env_cfg: Dict[str, Any], rules: Dict[str, Any], db_cfg: 
     }
 
     # Outputs por ambiente
-    save_json(f"links_audit_{env_name}.json", result)
-    try:
-        import csv
-        with open(f"links_audit_{env_name}.csv", "w", newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
-            w.writerow(["org","dashboard","dashboard_uid","folder_title","folder_id","folder_url",
-                        "item_source","panel_id","item_id","item_name","url","includeVariables","issue"])
-            for v in violations:
-                w.writerow([v.get("org"), v.get("dashboard"), v.get("dashboard_uid"),
-                            v.get("folder_title"), v.get("folder_id"), v.get("folder_url"),
-                            v.get("item_source"), v.get("panel_id"), v.get("item_id"),
-                            v.get("item_name"), v.get("url"), v.get("includeVariables"),
-                            v.get("issue")])
-    except Exception as e:
-        print(f"\n⚠ No se pudo escribir links_audit_{env_name}.csv: {e}")
+    if output_cfg.get("write_json", True):
+        save_json(f"links_audit_{env_name}.json", result)
+
+    if output_cfg.get("write_csv", True):
+        try:
+            import csv
+            with open(f"links_audit_{env_name}.csv", "w", newline="", encoding="utf-8") as f:
+                w = csv.writer(f)
+                w.writerow(["org","dashboard","dashboard_uid","folder_title","folder_id","folder_url",
+                            "item_source","panel_id","item_id","item_name","url","includeVariables","issue"])
+                for v in violations:
+                    w.writerow([v.get("org"), v.get("dashboard"), v.get("dashboard_uid"),
+                                v.get("folder_title"), v.get("folder_id"), v.get("folder_url"),
+                                v.get("item_source"), v.get("panel_id"), v.get("item_id"),
+                                v.get("item_name"), v.get("url"), v.get("includeVariables"),
+                                v.get("issue")])
+        except Exception as e:
+            print(f"\n⚠ No se pudo escribir links_audit_{env_name}.csv: {e}")
 
     # Persistencia BD
     if db_cfg["enabled"]:
@@ -577,26 +609,24 @@ def main():
     rules = cfg["rules"]
     db_cfg = cfg["db"]
     barw = cfg["progress"]["bar_width"]
+    output_cfg = cfg["output"]
 
     all_results = {"summaries": [], "environments": {}}
 
-    # Progreso total (todos los ambientes)
-    # Estimación: sum(companies * max(1, dashboards))
-    total_tasks = 0
-    for env in envs:
-        g = env["grafana"]
-        companies = g["companies_inline"] if g["companies_inline"] else load_json(g["companies_file"])
-        titles = g["dashboards"] or list((rules["link_targets"] or {}).values())
-        total_tasks += len(companies) * max(1, len(titles))
+    # Nota: calculabas total_tasks global, pero no estabas usando una barra global.
+    # Dejamos sólo las barras por ambiente para no complicar.
 
-    # Ejecutar ambiente por ambiente (cada uno con su barra separada para claridad)
     for env in envs:
-        res = run_for_environment(env, rules, db_cfg, barw)
+        res = run_for_environment(env, rules, db_cfg, barw, output_cfg)
         all_results["summaries"].append(res["summary"])
         all_results["environments"][env["name"]] = res
 
-    save_json("links_audit_all.json", all_results)
-    print("\nResumen combinado escrito en links_audit_all.json")
+    # Resumen global
+    if output_cfg.get("write_json", True):
+        save_json("links_audit_all.json", all_results)
+        print("\nResumen combinado escrito en links_audit_all.json")
+    else:
+        print("\nResumen combinado NO se escribe a archivo (WRITE_JSON=false)")
 
 if __name__ == "__main__":
     main()
