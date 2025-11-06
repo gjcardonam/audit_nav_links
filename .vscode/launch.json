@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python Debugger: templating_auditor",
+      "name": "Python Debugger: audit_nav_links",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/templating_auditor.py",
-      "args": ["-c", "configs/templating_auditor-config.json"],
+      "program": "${workspaceFolder}/audit_nav_links.py",
+      "args": ["-c", "configs/config.json"],
       "console": "integratedTerminal"
     }
   ]
