@@ -26,6 +26,10 @@ pipeline {
 
   }
 
+  triggers {
+        cron('0 7 * * *')
+    }
+
   stages {
     stage('Checkout') {
       steps {
