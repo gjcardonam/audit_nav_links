@@ -116,6 +116,27 @@ def _resolve_rules(cfg_rules: dict) -> Dict[str, Any]:
         "forbid_params": forbid_params
     }
 
+def apply_rule_overrides(base_rules: Dict[str, Any], overrides: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    merged = dict(base_rules)
+    if not overrides:
+        return merged
+    for key, value in overrides.items():
+        if key == "mode" and isinstance(value, str):
+            merged["mode"] = value.upper()
+        elif key == "panel_type" and isinstance(value, str):
+            merged["panel_type"] = value.lower()
+        elif key == "link_targets" and isinstance(value, dict):
+            merged["link_targets"] = value
+        elif key == "ignore_folders" and isinstance(value, list):
+            merged["ignore_folders"] = [str(s).strip().lower() for s in value if str(s).strip()]
+        elif key == "ignore_dropdowns":
+            merged["ignore_dropdowns"] = bool(value)
+        elif key == "require_include_vars":
+            merged["require_include_vars"] = bool(value)
+        elif key in {"forbid_url_params_any", "forbid_params"}:
+            merged["forbid_params"] = bool(value)
+    return merged
+
 def _resolve_db(cfg_db: dict) -> Dict[str, Any]:
     d = cfg_db or {}
     return {
@@ -155,7 +176,8 @@ def build_config(args) -> Dict[str, Any]:
         grafana = _resolve_grafana_fields(env)
         envs_resolved.append({
             "name": name,
-            "grafana": grafana
+            "grafana": grafana,
+            "rules_override": env.get("rules")
         })
 
     rules = _resolve_rules(cfg.get("rules", {}))
@@ -617,7 +639,8 @@ def main():
     # Dejamos sólo las barras por ambiente para no complicar.
 
     for env in envs:
-        res = run_for_environment(env, rules, db_cfg, barw, output_cfg)
+        env_rules = apply_rule_overrides(rules, env.get("rules_override"))
+        res = run_for_environment(env, env_rules, db_cfg, barw, output_cfg)
         all_results["summaries"].append(res["summary"])
         all_results["environments"][env["name"]] = res
 

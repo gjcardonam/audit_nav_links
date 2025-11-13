@@ -1,6 +1,5 @@
 {
   "rules": {
-    "mode": "LINKS",
     "panel_type": "volkovlabs-links-panel",
     "ignore_folders": ["Test", "TEMPLATES GL", "TEMPLATE GL DE", "Gas lift"],
     "ignore_dropdowns": true,
@@ -21,7 +20,7 @@
     }
   },
   "db": {
-    "enabled": true,
+    "enabled": false,
     "host": "rds-test.cj8e8cqeonv7.us-east-2.rds.amazonaws.com",
     "port": 5432,
     "name": "postgres",
@@ -70,6 +69,9 @@
           "Setpoints",
           "Reports"
         ]
+      },
+      "rules": {
+        "mode": "LINKS"
       }
     },
     {
@@ -106,6 +108,9 @@
           "Setpoints",
           "Reports"
         ]
+      },
+      "rules": {
+        "mode": "PANEL_LINKS"
       }
     }
   ]
