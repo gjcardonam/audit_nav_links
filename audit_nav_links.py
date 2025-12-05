@@ -44,8 +44,8 @@ DEFAULT_LINK_TARGETS = {
     "Status":       "24 Hour Status Summary",   # Nota: tu dev.json usa "Daily ESP Status"
     "Shutdowns":    "Shutdowns and Faults",
     "Production":   "Production History",
-    "Single-Axis":  "Real Time: Trends",
-    "Multi-axis":   "Real Time: Multi-axis",
+    "Single-Axis":  "Real Time: Single-Axis",
+    "Multi-Axis":   "Real Time: Multi-Axis",
     "Quick View":   "Real Time: Quick View",
     "Health Check": "Health Check",
     "Setpoints":    "Setpoints",
