@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "environment": "dev-permian",
+    "mode": "PANEL_LINKS",
+    "organizations": 1,
+    "dashboards": 12,
+    "items_checked": 0,
+    "violations": 0,
+    "elapsed_seconds": 0
+  },
+  "violations": []
+}

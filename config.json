@@ -1,5 +1,6 @@
 {
   "rules": {
+    "mode": "PANEL_LINKS",
     "panel_type": "volkovlabs-links-panel",
     "ignore_folders": ["Test", "TEMPLATES GL", "TEMPLATE GL DE", "Gas lift"],
     "ignore_dropdowns": true,
@@ -25,7 +26,8 @@
     "port": 5432,
     "name": "postgres",
     "schema": "public",
-    "user": "postgres"
+    "user": "postgres",
+    "password": "ENV_DB_PASSWORD"
   },
   "progress": { "bar_width": 46 },
 
@@ -36,38 +38,128 @@
 
   "environments": [
     {
+      "name": "dev-firebird",
+      "grafana": {
+        "url": "https://firebird-dev.enerview.site/api",
+        "verify_ssl": true,
+        "companies_inline": [
+          { "name": "Firebird", "token": "ENV_GRAFANA_TOKEN_FIREBIRD" }
+        ],
+        "dashboards": [
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
+        ],
+        "names_filter": [
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
+        ]
+      }
+    },
+    {
+      "name": "dev-apache",
+      "grafana": {
+        "url": "https://apache-dev.enerview.site/api",
+        "verify_ssl": true,
+        "companies_inline": [
+          { "name": "Apache", "token": "ENV_GRAFANA_TOKEN_APACHE" }
+        ],
+        "dashboards": [
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
+        ],
+        "names_filter": [
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
+        ]
+      }
+    },
+    {
+      "name": "dev-chord",
+      "grafana": {
+        "url": "https://chord-dev.enerview.site/api",
+        "verify_ssl": true,
+        "companies_inline": [
+          { "name": "Chord", "token": "ENV_GRAFANA_TOKEN_CHORD" }
+        ],
+        "dashboards": [
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
+        ],
+        "names_filter": [
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
+        ]
+      }
+    },
+    {
+      "name": "dev-ironorchard",
+      "grafana": {
+        "url": "https://ironorchard-dev.enerview.site/api",
+        "verify_ssl": true,
+        "companies_inline": [
+          { "name": "Iron Orchard", "token": "ENV_GRAFANA_TOKEN_IRONORCHARD" }
+        ],
+        "dashboards": [
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
+        ],
+        "names_filter": [
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
+        ]
+      }
+    },
+    {
+      "name": "dev-permian",
+      "grafana": {
+        "url": "https://permian-dev.enerview.site/api",
+        "verify_ssl": true,
+        "companies_inline": [
+          { "name": "Permian", "token": "ENV_GRAFANA_TOKEN_PERMIAN" }
+        ],
+        "dashboards": [
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
+        ],
+        "names_filter": [
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
+        ]
+      }
+    },
+    {
       "name": "qa",
       "grafana": {
         "url": "https://qa.enerview.site/api",
         "verify_ssl": true,
         "companies_file": "companies.qa.json",
+        "username": "ENV_GRAFANA_USER_QA",
+        "password": "ENV_GRAFANA_PASS_QA",
         "dashboards": [
-          "Benchmark",
-          "Daily ESP Status",
-          "Executive",
-          "Health Check",
-          "Production History",
-          "Production Optimization",
-          "Real Time: Quick View",
-          "Real Time: Single-Axis",
-          "Real Time: Multi-Axis",
-          "Reports",
-          "Setpoints",
-          "Shutdowns and Faults"
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
         ],
         "names_filter": [
-          "Executive",
-          "Benchmark",
-          "Production Optimization",
-          "Status",
-          "Shutdowns",
-          "Production",
-          "Single-Axis",
-          "Multi-Axis",
-          "Quick View",
-          "Health Check",
-          "Setpoints",
-          "Reports"
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
         ]
       },
       "rules": {
@@ -80,33 +172,18 @@
         "url": "https://dev.enerview.site/api",
         "verify_ssl": true,
         "companies_file": "companies.dev.json",
+        "username": "ENV_GRAFANA_USER_QA",
+        "password": "ENV_GRAFANA_PASS_QA",
         "dashboards": [
-          "Benchmark",
-          "Daily ESP Status",
-          "Executive",
-          "Health Check",
-          "Production History",
-          "Production Optimization",
-          "Real Time: Multi-Axis",
-          "Real Time: Quick View",
-          "Real Time: Single-Axis",
-          "Reports",
-          "Setpoints",
-          "Shutdowns and Faults"
+          "Benchmark", "Daily ESP Status", "Executive", "Health Check",
+          "Production History", "Production Optimization", "Real Time: Multi-Axis",
+          "Real Time: Quick View", "Real Time: Single-Axis", "Reports",
+          "Setpoints", "Shutdowns and Faults"
         ],
         "names_filter": [
-          "Executive",
-          "Benchmark",
-          "Production Optimization",
-          "Status",
-          "Shutdowns",
-          "Production",
-          "Single-Axis",
-          "Multi-Axis",
-          "Quick View",
-          "Health Check",
-          "Setpoints",
-          "Reports"
+          "Executive", "Benchmark", "Production Optimization", "Status",
+          "Shutdowns", "Production", "Single-Axis", "Multi-Axis",
+          "Quick View", "Health Check", "Setpoints", "Reports"
         ]
       },
       "rules": {

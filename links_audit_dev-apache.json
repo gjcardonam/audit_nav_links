@@ -1,0 +1,88 @@
+{
+  "summary": {
+    "environment": "dev-apache",
+    "mode": "PANEL_LINKS",
+    "organizations": 1,
+    "dashboards": 12,
+    "items_checked": 106,
+    "violations": 5,
+    "elapsed_seconds": 27
+  },
+  "violations": [
+    {
+      "org": "Apache",
+      "dashboard": "Benchmark",
+      "dashboard_uid": "ceoo84cmemm80d",
+      "folder_title": "Apache",
+      "folder_id": 2,
+      "folder_url": "/dashboards/f/cf1q4alslr9xcb/apache",
+      "panel_id": 129,
+      "item_source": "group",
+      "item_id": "8be1cff8-9db1-4913-93c8-8e818a103eb9",
+      "item_name": "Health Check",
+      "url": "/d/df384e6av5xj4f/health-check",
+      "includeVariables": true,
+      "issue": "target_uid_mismatch"
+    },
+    {
+      "org": "Apache",
+      "dashboard": "Daily ESP Status",
+      "dashboard_uid": "s6-EeN-Vz",
+      "folder_title": "Apache",
+      "folder_id": 2,
+      "folder_url": "/dashboards/f/cf1q4alslr9xcb/apache",
+      "panel_id": 129,
+      "item_source": "group",
+      "item_id": "8be1cff8-9db1-4913-93c8-8e818a103eb9",
+      "item_name": "Health Check",
+      "url": "/d/df384e6av5xj4f/health-check",
+      "includeVariables": true,
+      "issue": "target_uid_mismatch"
+    },
+    {
+      "org": "Apache",
+      "dashboard": "Executive",
+      "dashboard_uid": "ceoo8jfyjiq68c",
+      "folder_title": "Apache",
+      "folder_id": 2,
+      "folder_url": "/dashboards/f/cf1q4alslr9xcb/apache",
+      "panel_id": 129,
+      "item_source": "group",
+      "item_id": "8be1cff8-9db1-4913-93c8-8e818a103eb9",
+      "item_name": "Health Check",
+      "url": "/d/df384e6av5xj4f/health-check",
+      "includeVariables": true,
+      "issue": "target_uid_mismatch"
+    },
+    {
+      "org": "Apache",
+      "dashboard": "Production Optimization",
+      "dashboard_uid": "eeoo9e4vx3cowc",
+      "folder_title": "Apache",
+      "folder_id": 2,
+      "folder_url": "/dashboards/f/cf1q4alslr9xcb/apache",
+      "panel_id": 129,
+      "item_source": "group",
+      "item_id": "8be1cff8-9db1-4913-93c8-8e818a103eb9",
+      "item_name": "Health Check",
+      "url": "/d/df384e6av5xj4f/health-check",
+      "includeVariables": true,
+      "issue": "target_uid_mismatch"
+    },
+    {
+      "org": "Apache",
+      "dashboard": "Shutdowns and Faults",
+      "dashboard_uid": "deooaj4y1k54wb",
+      "folder_title": "Apache",
+      "folder_id": 2,
+      "folder_url": "/dashboards/f/cf1q4alslr9xcb/apache",
+      "panel_id": 129,
+      "item_source": "group",
+      "item_id": "8be1cff8-9db1-4913-93c8-8e818a103eb9",
+      "item_name": "Health Check",
+      "url": "/d/df384e6av5xj4f/health-check",
+      "includeVariables": true,
+      "issue": "target_uid_mismatch"
+    }
+  ]
+}
