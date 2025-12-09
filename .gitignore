@@ -220,3 +220,5 @@ __marimo__/
 *all.json
 *dev.json
 *qa.json
+links_audit*.json
+links_audit_*.csv
